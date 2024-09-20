@@ -120,12 +120,13 @@ contract RockNFTMarketplace {
         if (msg.sender == address(0)) {
             revert AddressZeroDetected();
         }
-        if (_nftContract.totalSupply() == _nftContract.maxSupply()) {
-            revert MaxSupplyReached();
-        }
         if (nftToInfo[address(_nftContract)].isCreated == false) {
             revert NFTNotCreatedYet();
         }
+        if (_nftContract.totalSupply() == _nftContract.maxSupply()) {
+            revert MaxSupplyReached();
+        }
+
         NFTInfo memory foundNFT = nftToInfo[address(_nftContract)];
         uint256 foundNFTPrice = foundNFT.price;
 
@@ -223,11 +224,12 @@ contract RockNFTMarketplace {
         MarketItem storage item = idToMarketItem[_itemId];
         if (item.seller != msg.sender) revert NotOwner();
         if (item.sold) revert ItemNotListed();
+        address nftContract = item.nftContract;
+        uint256 nftId = item.tokenId;
 
-        delete idToMarketItem[_itemId];
         listedNFTs[item.nftContract][item.tokenId] = false;
-
-        emit ListingCanceled(_itemId, item.nftContract, item.tokenId);
+        delete idToMarketItem[_itemId];
+        emit ListingCanceled(_itemId, nftContract, nftId);
     }
 
     function updateListing(uint256 _itemId, uint256 _newPrice) external {

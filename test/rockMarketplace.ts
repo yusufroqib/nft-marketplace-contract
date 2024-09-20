@@ -2,6 +2,11 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+import { RockNFT__factory } from "../typechain-types";
+import {
+	RockNFT,
+	RockNFTInterface,
+} from "../typechain-types/contracts/RockNFT";
 const helpers = require("@nomicfoundation/hardhat-network-helpers");
 
 describe("RockNFTMarketplace", function () {
@@ -112,8 +117,8 @@ describe("RockNFTMarketplace", function () {
 			const { marketplace, user2 } = await loadFixture(deployFixture);
 
 			await expect(
-				marketplace.connect(user2).mintNFT(ethers.ZeroAddress)
-			).to.be.revertedWithCustomError(marketplace, "AddressZeroDetected");
+				marketplace.connect(user2).mintNFT(user2.address)
+			).to.be.revertedWithCustomError(marketplace, "NFTNotCreatedYet");
 		});
 
 		it("Should revert if allowance too low", async function () {
@@ -146,8 +151,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -220,8 +224,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -269,8 +272,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -295,14 +297,13 @@ describe("RockNFTMarketplace", function () {
 				.connect(user1)
 				.createNFT("TestNFT", "TNFT", 100, ethers.parseEther("1"));
 			const nftAddress = await marketplace.allNFTs(0);
-			console.log({ nftAddress });
-			await platformToken
+
+            await platformToken
 				.connect(user2)
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -313,7 +314,7 @@ describe("RockNFTMarketplace", function () {
 
 			await expect(marketplace.connect(user2).cancelListing(1))
 				.to.emit(marketplace, "ListingCanceled")
-				.withArgs(1, nftAddress, 0);
+				.withArgs(1, nftAddress, 1);
 		});
 
 		it("Should revert if not owner", async function () {
@@ -331,8 +332,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -363,8 +363,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
@@ -395,8 +394,7 @@ describe("RockNFTMarketplace", function () {
 				.approve(marketplace.target, ethers.parseEther("1"));
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
-			const RockNFT = await ethers.getContractFactory("RockNFT");
-			const nftContract = RockNFT.attach(nftAddress);
+			const nftContract = await ethers.getContractAt("RockNFT", nftAddress);
 			await nftContract
 				.connect(user2)
 				.setApprovalForAll(marketplace.target, true);
