@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract RockNFT is ERC721, ERC721Enumerable, Ownable {
-    uint256 private _nextTokenId;
+    uint256 private _nextTokenId = 1;
     uint256 public immutable maxSupply;
     address public immutable allowedContract;
 

@@ -85,7 +85,7 @@ describe("RockNFTMarketplace", function () {
 
 			await expect(marketplace.connect(user2).mintNFT(nftAddress))
 				.to.emit(marketplace, "NFTMinted")
-				.withArgs(user2.address, nftAddress, 0);
+				.withArgs(user2.address, nftAddress, 1);
 		});
 
 		it("Should revert if max supply reached", async function () {
@@ -155,10 +155,10 @@ describe("RockNFTMarketplace", function () {
 			await expect(
 				marketplace
 					.connect(user2)
-					.listNFT(nftAddress, 0, ethers.parseEther("2"))
+					.listNFT(nftAddress, 1, ethers.parseEther("2"))
 			)
 				.to.emit(marketplace, "NFTListed")
-				.withArgs(1, nftAddress, 0, user2.address, ethers.parseEther("2"));
+				.withArgs(1, nftAddress, 1, user2.address, ethers.parseEther("2"));
 		});
 
 		it("Should revert if price is zero", async function () {
@@ -177,7 +177,7 @@ describe("RockNFTMarketplace", function () {
 			await marketplace.connect(user2).mintNFT(nftAddress);
 
 			await expect(
-				marketplace.connect(user2).listNFT(nftAddress, 0, 0)
+				marketplace.connect(user2).listNFT(nftAddress, 1, 0)
 			).to.be.revertedWithCustomError(marketplace, "InvalidPrice");
 		});
 
@@ -199,7 +199,7 @@ describe("RockNFTMarketplace", function () {
 			await expect(
 				marketplace
 					.connect(user1)
-					.listNFT(nftAddress, 0, ethers.parseEther("2"))
+					.listNFT(nftAddress, 1, ethers.parseEther("2"))
 			).to.be.revertedWithCustomError(marketplace, "NotOwner");
 		});
 	});
@@ -228,7 +228,7 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await platformToken
 				.connect(user1)
@@ -239,7 +239,7 @@ describe("RockNFTMarketplace", function () {
 				.withArgs(
 					1,
 					nftAddress,
-					0,
+					1,
 					user2.address,
 					user1.address,
 					ethers.parseEther("2")
@@ -277,7 +277,7 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await expect(
 				marketplace.connect(user1).buyNFT(1)
@@ -309,7 +309,7 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await expect(marketplace.connect(user2).cancelListing(1))
 				.to.emit(marketplace, "ListingCanceled")
@@ -339,7 +339,7 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await expect(
 				marketplace.connect(user1).cancelListing(1)
@@ -371,13 +371,13 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await expect(
 				marketplace.connect(user2).updateListing(1, ethers.parseEther("3"))
 			)
 				.to.emit(marketplace, "ListingUpdated")
-				.withArgs(1, nftAddress, 0, ethers.parseEther("3"));
+				.withArgs(1, nftAddress, 1, ethers.parseEther("3"));
 		});
 
 		it("Should revert if price is zero", async function () {
@@ -403,7 +403,7 @@ describe("RockNFTMarketplace", function () {
 
 			await marketplace
 				.connect(user2)
-				.listNFT(nftAddress, 0, ethers.parseEther("2"));
+				.listNFT(nftAddress, 1, ethers.parseEther("2"));
 
 			await expect(
 				marketplace.connect(user2).updateListing(1, 0)

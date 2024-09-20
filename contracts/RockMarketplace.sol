@@ -44,7 +44,8 @@ contract RockNFTMarketplace {
 
     RockNFT[] public allNFTs;
     mapping(address nftContract => NFTInfo) public nftToInfo;
-    mapping(address nftContract => MarketItem[]) public nftContractToMarketItems;
+    mapping(address nftContract => MarketItem[])
+        public nftContractToMarketItems;
     mapping(uint256 itemId => MarketItem) private idToMarketItem;
     mapping(address nftContract => mapping(uint256 tokenId => bool))
         private listedNFTs;
